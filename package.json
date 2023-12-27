@@ -1,6 +1,6 @@
 {
   "name": "vue3-d3-tree",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Vue3 Tree Chart By D3",
   "type": "module",
   "author": "strongfish",
