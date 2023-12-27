@@ -1,0 +1,53 @@
+{
+  "name": "vue3-d3-tree",
+  "version": "1.0.0-beta.2",
+  "description": "Vue3 Tree Chart By D3",
+  "type": "module",
+  "author": "strongfish",
+  "homepage": "https://astrongfish.github.io/vue-d3-tree/",
+  "keywords": [
+    "vue tree",
+    "vue d3 tree"
+  ],
+  "files": [
+    "dist/index.js",
+    "dist/index.umd.cljs",
+    "dist/style.css"
+  ],
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+  },
+  "peerDependencies": {
+    "vue": ">=3.0.0"
+  },
+  "dependencies": {
+    "d3": "^7.8.5",
+    "d3-flextree": "^2.1.2",
+    "loadsh": "^0.0.4",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@vitejs/plugin-vue": "^4.5.0",
+    "conventional-changelog-cli": "^4.1.0",
+    "husky": "^8.0.3",
+    "vite": "^5.0.0",
+    "vue": "^3.3.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:astrongfish/vue-d3-tree.git"
+  },
+  "license": "ISC"
+}
