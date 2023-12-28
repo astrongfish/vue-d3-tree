@@ -1,4 +1,5 @@
 # Vue3 D3 Tree
+[![Npm version](https://img.shields.io/npm/v/vue3-d3-tree.svg)](https://www.npmjs.com/package/vue3-d3-tree)
 
 使用 D3 实现的 Vue3 树状图
 
