@@ -15,7 +15,6 @@ const treeData = ref({
 });
 
 const getNodeKey = (data) => {
-  console.log('%%%%', data)
   return data.name.en
 }
 </script>

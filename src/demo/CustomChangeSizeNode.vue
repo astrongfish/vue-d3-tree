@@ -1,5 +1,4 @@
 <script setup>
-import "./style.css";
 import { ref } from "vue"
 
 

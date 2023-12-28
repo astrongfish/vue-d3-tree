@@ -13,12 +13,13 @@ const props = defineProps(p.validProps);
 const zoomListner = ref(null);
 const transform = ref("");
 const scale = ref(1);
-const changedSize = ref(false);
 const treeData = ref({});
+
+const changedSize = ref(true);
+const changePosition = ref(true);
 
 const id = uuid.v4().replaceAll("-", "");
 const nodeClass = ref(`node-${id}`);
-const containerId = ref(`tree-container-${id}`);
 
 const foreignObjectStyle = ref({
   overflow: "visible",
@@ -48,7 +49,6 @@ const treeRef = ref(null);
 onMounted(() => {
   treeData.value = _.cloneDeep(props.data);
   const listner = draw.zoomListner(
-    containerId.value,
     props,
     treeRef.value,
     (e) => {
@@ -57,13 +57,16 @@ onMounted(() => {
     }
   );
   zoomListner.value = listner;
-  _reDraw();
+  _reDraw()
+  _rePosition()
 });
 
 onUpdated(() => {
-  if (!changedSize.value) {
+  if (changedSize.value) {
     _reSize();
-    changedSize.value = true;
+  }
+  if(changePosition.value){
+    _rePosition()
   }
 });
 
@@ -71,16 +74,15 @@ watch(
   () => props.data,
   (data) => {
     treeData.value = _.cloneDeep(data);
-    changedSize.value = false;
+    changedSize.value = true;
     _reDraw();
   }
 );
 
 //重新调整位置
 watch([() => props.top, () => props.left, () => props.direction], () => {
-  changedSize.value = false;
-  _reDraw();
-  draw.rePosition(containerId.value, props, treeRef.value, zoomListner.value);
+  changedSize.value = true;
+  changePosition.value = true;
 });
 
 //重绘
@@ -93,8 +95,7 @@ watch(
     () => props.defaultNodeCollapsedStyle,
   ],
   () => {
-    changedSize.value = false;
-    _reDraw();
+    changedSize.value = true;
   }
 );
 
@@ -120,6 +121,15 @@ function _reDraw() {
 function _reSize() {
   draw.reSize(nodes.value, scale.value, toRaw(nodeClass.value));
   _reDraw();
+  changedSize.value = false;
+}
+
+/**
+ * 调整位置
+ */
+function _rePosition(){
+  draw.rePosition(props, treeRef.value, zoomListner.value);
+  changePosition.value = false
 }
 
 /**
@@ -199,7 +209,6 @@ defineExpose({
 
 <template>
   <div
-    :id="containerId"
     ref="treeRef"
     :style="{
       width: '100%',

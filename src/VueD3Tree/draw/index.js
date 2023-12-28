@@ -7,15 +7,13 @@ import * as treeNode from "./treeNode";
 import * as knotNode from "./knotNode";
 import * as linkLine from "./linkLine";
 
-const getCenterOffsetX = (containerId) => {
-  const container = document.getElementById(containerId);
-  const rect = container.getBoundingClientRect();
+const getCenterOffsetX = (element) => {
+  const rect = element.getBoundingClientRect();
   return rect.width / 2;
 };
 
-const getCenterOffsetY = (containerId) => {
-  const container = document.getElementById(containerId);
-  const rect = container.getBoundingClientRect();
+const getCenterOffsetY = (element) => {
+  const rect = element.getBoundingClientRect();
   return rect.height / 2;
 };
 
@@ -25,7 +23,7 @@ const getCenterOffsetY = (containerId) => {
  * @param {*} element
  * @param {*} callback
  */
-const zoomListner = (containerId, props, element, callback) => {
+const zoomListner = (props, element, callback) => {
   const zoomListner = d3
     .zoom()
     .scaleExtent([0.2, 3])
@@ -39,20 +37,17 @@ const zoomListner = (containerId, props, element, callback) => {
     zoom.on("wheel.zoom", null);
   }
 
-  rePosition(containerId, props, element, zoomListner)
-
   return zoomListner;
 };
 
 /**
  * 重新调整位置
- * @param {*} containerId 
  * @param {*} props 
  * @param {*} element 
  */
-const rePosition = (containerId, props, element, zoomListner) => {
-  let translateX = p.getLeft(props) === 'center' ? getCenterOffsetX(containerId) : p.getLeft(props);
-  let translateY = p.getTop(props) === 'center' ? getCenterOffsetY(containerId) : p.getTop(props);
+const rePosition = (props, element, zoomListner) => {
+  let translateX = p.getLeft(props) === 'center' ? getCenterOffsetX(element) : p.getLeft(props);
+  let translateY = p.getTop(props) === 'center' ? getCenterOffsetY(element) : p.getTop(props);
   d3.select(element)
     .transition()
     .call(
@@ -157,21 +152,25 @@ const draw = (treeData, props) => {
  */
 const reSize = (nodes, scale, nodeClass) => {
   document.querySelectorAll(`.${nodeClass}`).forEach((element) => {
-    const rect = element.getBoundingClientRect();
-    const nodeId = element.dataset.nodeId;
-    const node = nodes.find((node) => node.id === nodeId);
-    if (node) {
-      extra.setNodeWidth(node, rect.width / scale);
-      extra.setNodeHeight(node, rect.height / scale);
+    if(element){
+      const rect = element.getBoundingClientRect();
+      const nodeId = element.dataset.nodeId;
+      const node = nodes.find((node) => node.id === nodeId);
+      if (node) {
+        extra.setNodeWidth(node, rect.width / scale);
+        extra.setNodeHeight(node, rect.height / scale);
+      }
     }
   });
 
   document.querySelectorAll(".knot-container").forEach((element) => {
-    const rect = element.getBoundingClientRect();
-    const nodeId = element.dataset.nodeId;
-    const node = nodes.find((node) => node.id === nodeId);
-    extra.setKnotWidth(node, rect.width / scale);
-    extra.setKnotHeight(node, rect.height / scale);
+    if(element){
+      const rect = element.getBoundingClientRect();
+      const nodeId = element.dataset.nodeId;
+      const node = nodes.find((node) => node.id === nodeId);
+      extra.setKnotWidth(node, rect.width / scale);
+      extra.setKnotHeight(node, rect.height / scale);
+    }
   });
 };
 
